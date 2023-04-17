@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:newshopapp/UI/screen/bottom_nav_bar.dart';
 import 'package:newshopapp/constants/custom_theme.dart';
+import 'package:newshopapp/models/cart_provider.dart';
 import 'package:newshopapp/models/products_list_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -18,8 +21,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final customTheme = CustomTheme();
-    return ChangeNotifierProvider(
-      create: (_) => ProductsList(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductsList()),
+        ChangeNotifierProvider(create: (_) => Cart())
+      ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: customTheme.customThemeData,
