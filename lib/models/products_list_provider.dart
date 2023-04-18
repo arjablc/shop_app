@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newshopapp/models/product_provider.dart';
 
 class ProductsList with ChangeNotifier {
-  // ignore: prefer_final_fields
+  //ignore: prefer_final_fields
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -44,7 +44,18 @@ class ProductsList with ChangeNotifier {
     return items.firstWhere((element) => element.id == id);
   }
 
-  List<Product> get favoriteItems {
-    return _items.where((element) => element.isFavorite == true).toList();
+  final List<Product> _favoriteItems = [];
+
+  List<Product> get favoriteItems => [..._favoriteItems];
+
+  void toggleFavortie(Product product) {
+    if (_favoriteItems.contains(product)) {
+      product.isFavorite = false;
+      _favoriteItems.remove(product);
+    } else {
+      product.isFavorite = true;
+      _favoriteItems.add(product);
+    }
+    notifyListeners();
   }
 }

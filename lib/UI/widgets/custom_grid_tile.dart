@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/product_provider.dart';
 import '../screen/product_detail_screen.dart';
+import '../../models/products_list_provider.dart';
 
 class CustomGridTile extends StatelessWidget {
   const CustomGridTile({
@@ -17,6 +18,8 @@ class CustomGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product product = Provider.of<Product>(context, listen: false);
+    final ProductsList productsList = Provider.of<ProductsList>(context);
+
     return GestureDetector(
       onTap: () => navigateToDetailScreen(product.id, context),
       child: Container(
@@ -98,7 +101,8 @@ class CustomGridTile extends StatelessWidget {
                                       color: Colors.transparent,
                                       child: IconButton(
                                         splashColor: Colors.redAccent,
-                                        onPressed: product.toggleFavorite,
+                                        onPressed: () => productsList
+                                            .toggleFavortie(product),
                                         icon: Consumer<Product>(
                                             builder: (context, product, child) {
                                           return Icon(product.isFavorite
