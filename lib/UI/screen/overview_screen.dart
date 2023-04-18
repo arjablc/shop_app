@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/UI/widgets/overview_grid.dart';
+import 'package:newshopapp/models/cart_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../../UI/screen/cart_screen.dart';
+import '../../UI/widgets/overview_grid.dart';
 
 enum FavotiteState { allItems, onlyFavorites }
 
@@ -11,32 +15,37 @@ class OverviewScreen extends StatefulWidget {
 }
 
 class _OverviewScreenState extends State<OverviewScreen> {
-  void toggelFavotires(bool value) {}
+  void goToCartScreen() {
+    Navigator.of(context).pushNamed(CartScreen.routeName);
+  }
 
   bool onlyFavorites = false;
   @override
   Widget build(BuildContext context) {
+    final int count = Provider.of<Cart>(context).cartItemCount;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome to your Shop"),
         actions: [
-          PopupMenuButton(
-            color: Colors.white,
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                  value: FavotiteState.allItems,
-                  child: CheckboxMenuButton(
-                      value: onlyFavorites,
-                      onChanged: (value) => toggelFavotires,
-                      child: const Text('All Items'))),
-              PopupMenuItem(
-                  value: FavotiteState.onlyFavorites,
-                  child: CheckboxMenuButton(
-                      value: onlyFavorites,
-                      onChanged: (value) => toggelFavotires,
-                      child: const Text('Only Favorite Items')))
-            ],
-            icon: const Icon(Icons.more_vert),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: GestureDetector(
+                onTap: goToCartScreen,
+                child: Badge.count(
+                  // label: Text('1'),
+                  backgroundColor: Colors.black,
+                  count: count,
+                  largeSize: 20,
+                  isLabelVisible: true,
+                  child: const Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ),
+            ),
           )
         ],
       ),

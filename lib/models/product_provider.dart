@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:newshopapp/models/products_list_provider.dart';
-
 class Product with ChangeNotifier {
   final String id;
   final String name;

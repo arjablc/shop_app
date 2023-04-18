@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/product_provider.dart';
@@ -111,17 +112,25 @@ class CustomGridTile extends StatelessWidget {
                                         }),
                                       ),
                                     ),
-                                    Material(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: Colors.transparent,
-                                      clipBehavior: Clip.hardEdge,
-                                      child: IconButton(
-                                          splashColor: Colors.red,
-                                          onPressed: () {
-                                            null;
-                                          },
-                                          icon:
-                                              const Icon(Icons.shopping_cart)),
+                                    Consumer<Cart>(
+                                      builder: (context, cart, child) =>
+                                          Material(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.transparent,
+                                        clipBehavior: Clip.hardEdge,
+                                        child: IconButton(
+                                            splashColor: Colors.red,
+                                            onPressed: () => cart.addItem(
+                                                product.id,
+                                                product.price,
+                                                product.name),
+                                            icon: cart.isOnCart(product.id)
+                                                ? const Icon(
+                                                    Icons.shopping_cart)
+                                                : const Icon(Icons
+                                                    .shopping_cart_outlined)),
+                                      ),
                                     )
                                   ],
                                 )),

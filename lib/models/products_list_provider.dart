@@ -3,7 +3,7 @@ import 'package:newshopapp/models/product_provider.dart';
 
 class ProductsList with ChangeNotifier {
   //ignore: prefer_final_fields
-  List<Product> _items = [
+  final List<Product> _items = [
     Product(
       id: 'p1',
       name: 'Red Shirt',

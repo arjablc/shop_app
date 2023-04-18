@@ -14,10 +14,23 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  // ignore: prefer_final_fields
-  Map<String, CartItem> _items = {};
+  final Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items => {..._items};
+
+  int get cartItemCount => _items.length;
+
+  bool isOnCart(String prodID) {
+    return _items.containsKey(prodID);
+  }
+
+  double get totalPrice {
+    double helperTotalPrice = 0.0;
+    _items.forEach((key, value) {
+      helperTotalPrice += value.price;
+    });
+    return helperTotalPrice;
+  }
 
   void addItem(String prodId, double price, String name) {
     if (items.containsKey(prodId)) {
@@ -32,5 +45,6 @@ class Cart with ChangeNotifier {
       _items.putIfAbsent(prodId,
           () => CartItem(id: prodId, name: name, price: price, quantity: 1));
     }
+    notifyListeners();
   }
 }
