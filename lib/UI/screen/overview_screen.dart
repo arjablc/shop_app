@@ -28,10 +28,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
         title: const Text("Welcome to your Shop"),
         actions: [
           Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: GestureDetector(
-                onTap: goToCartScreen,
+            child: GestureDetector(
+              onTap: goToCartScreen,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Badge.count(
                   // label: Text('1'),
                   backgroundColor: Colors.black,
