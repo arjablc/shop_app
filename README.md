@@ -8,6 +8,6 @@ A shop application made from flutter with modern UI.
 - View your order history
 
 ## To be implemented 
-[] Increasing or decreasing the quantity of products in your cart 
-[] Implementing login functions
-[] Adding animations here and there
+-[] Increasing or decreasing the quantity of products in your cart 
+-[] Implementing login functions
+-[] Adding animations here and there
