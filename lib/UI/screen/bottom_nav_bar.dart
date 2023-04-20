@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/UI/screen/orders_screen.dart';
 
 import 'overview_screen.dart';
 import 'favorite_screen.dart';
@@ -13,7 +14,11 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
 
-  final List _screensList = const [OverviewScreen(), FavotireScreen()];
+  final List _screensList = const [
+    OverviewScreen(),
+    FavotireScreen(),
+    OrderScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
               label: 'Favorites',
               backgroundColor: Colors.grey[800],
               tooltip: 'Favorite Items'),
+          BottomNavigationBarItem(
+              icon: const Icon(
+                Icons.history_rounded,
+              ),
+              label: 'History',
+              backgroundColor: Colors.grey[800],
+              tooltip: 'Home Screen'),
         ],
         onTap: (value) {
           setState(() {

@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:newshopapp/UI/screen/cart_screen.dart';
+import 'package:newshopapp/UI/screen/orders_screen.dart';
+import 'package:newshopapp/models/orders_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'UI/screen/bottom_nav_bar.dart';
@@ -23,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsList()),
-        ChangeNotifierProvider(create: (_) => Cart())
+        ChangeNotifierProvider(create: (_) => Cart()),
+        ChangeNotifierProvider(create: (_) => Orders())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -31,7 +34,8 @@ class MyApp extends StatelessWidget {
           home: const BottomNavBar(),
           routes: {
             ProductDetailScreen.routeName: (_) => const ProductDetailScreen(),
-            CartScreen.routeName: (_) => const CartScreen()
+            CartScreen.routeName: (_) => const CartScreen(),
+            OrderScreen.routeName: (_) => const OrderScreen()
           }),
     );
   }
