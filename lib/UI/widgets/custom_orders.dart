@@ -45,15 +45,12 @@ class _CustomOrdersUiState extends State<CustomOrdersUi> {
                     .titleMedium!
                     .copyWith(fontSize: 15),
               ),
-              leading: Flexible(
-                fit: FlexFit.tight,
-                child: Chip(
-                  label: Text(
-                    '\$ ${widget.price.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  backgroundColor: Colors.grey[900],
+              leading: Chip(
+                label: Text(
+                  '\$ ${widget.price.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
+                backgroundColor: Colors.grey[900],
               ),
               trailing: IconButton(
                 icon: isExpanded
