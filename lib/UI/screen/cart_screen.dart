@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:newshopapp/models/cart_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/orders_provider.dart';
 import '../widgets/custom_cart_item_ui.dart';
 
 class CartScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     final double totalPrice = cart.totalPrice;
+    final orders = Provider.of<Orders>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Your Cart')),
       body: Column(children: [
@@ -27,7 +29,7 @@ class CartScreen extends StatelessWidget {
             Flexible(
               child: Chip(
                 label: Text(
-                  '\$ $totalPrice',
+                  '\$ ${totalPrice.toStringAsFixed(2)}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 backgroundColor: Colors.grey[900],
@@ -48,6 +50,32 @@ class CartScreen extends StatelessWidget {
           itemCount: cart.items.values.toList().length,
         ))
       ]),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          orders.ordersPlaced(cart.items.values.toList(), totalPrice);
+          cart.clearItems();
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.075,
+          width: MediaQuery.of(context).size.width * 0.35,
+          padding: const EdgeInsets.all(5),
+          alignment: Alignment.bottomRight,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.grey[800]),
+          child: Center(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Icon(Icons.shopping_cart_checkout_sharp),
+              Text(
+                'Checkout',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontSize: 20),
+              )
+            ]),
+          ),
+        ),
+      ),
     );
   }
 }

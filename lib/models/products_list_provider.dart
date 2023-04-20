@@ -30,7 +30,7 @@ class ProductsList with ChangeNotifier {
     ),
     Product(
       id: 'p4',
-      name: 'A Pan with the best pan handle',
+      name: 'Iron Pan',
       description: 'Prepare any meal you want.',
       price: 49.99,
       imageUrl:
