@@ -21,6 +21,31 @@ class CartItemUi extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(5, 0, 5, 10),
       child: Dismissible(
+        dismissThresholds: const {DismissDirection.endToStart: 0.9},
+        confirmDismiss: (direction) {
+          return showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    backgroundColor: Colors.grey[700],
+                    title: const Text('Are you sure about that??'),
+                    titleTextStyle: Theme.of(context).textTheme.titleMedium,
+                    actionsAlignment: MainAxisAlignment.spaceBetween,
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text(
+                            'No',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(color: Colors.white),
+                          ))
+                    ],
+                  ));
+        },
         key: ValueKey(cartId),
         direction: DismissDirection.endToStart,
         background: const Padding(
@@ -55,7 +80,7 @@ class CartItemUi extends StatelessWidget {
               leading: CircleAvatar(
                   backgroundColor: Colors.grey, child: Text('x$quantity')),
               trailing: const Icon(
-                Icons.swipe_right_alt,
+                Icons.swipe_left_alt,
                 size: 40,
               )),
         ),

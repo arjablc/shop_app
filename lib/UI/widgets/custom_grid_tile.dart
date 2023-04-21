@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../models/cart_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/cart_provider.dart';
 import '../../models/product_provider.dart';
 import '../screen/product_detail_screen.dart';
 import '../../models/products_list_provider.dart';
@@ -121,10 +121,10 @@ class CustomGridTile extends StatelessWidget {
                                         clipBehavior: Clip.hardEdge,
                                         child: IconButton(
                                             splashColor: Colors.red,
-                                            onPressed: () => cart.addItem(
-                                                product.id,
-                                                product.price,
-                                                product.name),
+                                            onPressed: () {
+                                              cart.addItem(product.id,
+                                                  product.price, product.name);
+                                            },
                                             icon: cart.isOnCart(product.id)
                                                 ? const Icon(
                                                     Icons.shopping_cart)
