@@ -4,7 +4,7 @@ A shop application made from flutter with modern UI.
 
 ## Functionalities
 - [x] ~~Add products to favorite~~
-- [x] ~~Add and remove products to cart ~~
+- [x] ~~Add and remove products to cart~~
 - [x] ~~View your order history~~
 
 ## To be implemented 
