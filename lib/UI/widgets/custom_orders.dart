@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 
 import '../../models/cart_provider.dart';
@@ -55,10 +56,10 @@ class _CustomOrdersUiState extends State<CustomOrdersUi> {
               trailing: IconButton(
                 icon: isExpanded
                     ? const Icon(
-                        Icons.expand_more_rounded,
+                        Icons.expand_less_rounded,
                         color: Colors.white,
                       )
-                    : const Icon(Icons.expand_less_rounded,
+                    : const Icon(Icons.expand_more_rounded,
                         color: Colors.white),
                 onPressed: () => setState(() {
                   isExpanded = !isExpanded;
