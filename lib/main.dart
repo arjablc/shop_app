@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:newshopapp/UI/screen/cart_screen.dart';
 import 'package:newshopapp/UI/screen/orders_screen.dart';

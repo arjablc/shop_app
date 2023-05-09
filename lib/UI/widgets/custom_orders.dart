@@ -80,14 +80,22 @@ class _CustomOrdersUiState extends State<CustomOrdersUi> {
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: Row(children: [
                         Text(
-                          '\$ ${widget.orders[index].price}',
+                          widget.orders[index].name,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
                               .copyWith(fontSize: 15),
                         ),
                         Text(
-                          ' X${widget.orders[index].quantity}',
+                          ' X ${widget.orders[index].quantity}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  fontWeight: FontWeight.w100, fontSize: 15),
+                        ),
+                        Text(
+                          "= \$ ${widget.price}",
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!

@@ -122,8 +122,18 @@ class CustomGridTile extends StatelessWidget {
                                         child: IconButton(
                                             splashColor: Colors.red,
                                             onPressed: () {
+                                              ScaffoldMessenger.of(context)
+                                                  .removeCurrentSnackBar();
                                               cart.addItem(product.id,
                                                   product.price, product.name);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                duration: Duration(seconds: 1),
+                                                content:
+                                                    Text("Added Item to Cart"),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                              ));
                                             },
                                             icon: cart.isOnCart(product.id)
                                                 ? const Icon(

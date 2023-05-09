@@ -11,21 +11,28 @@ class OrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<Orders>(context).items;
+    bool isEmpty = orders.isEmpty;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Order History'),
       ),
-      body: ListView.builder(
-        itemCount: orders.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CustomOrdersUi(
-              id: orders[index].id,
-              price: orders[index].price,
-              orders: orders[index].orderedItems,
-              dateTime: orders[index].datetime);
-        },
-      ),
+      body: isEmpty
+          ? Center(
+              child: Text(
+              "Buy some items first.!!",
+              style: Theme.of(context).textTheme.titleMedium,
+            ))
+          : ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CustomOrdersUi(
+                    id: orders[index].id,
+                    price: orders[index].price,
+                    orders: orders[index].orderedItems,
+                    dateTime: orders[index].datetime);
+              },
+            ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/UI/screen/new_product_screen.dart';
 import 'package:newshopapp/UI/screen/orders_screen.dart';
 
 import 'overview_screen.dart';
@@ -16,6 +17,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   final List _screensList = const [
     OverviewScreen(),
+    NewProductScreen(),
     FavotireScreen(),
     OrderScreen()
   ];
@@ -29,6 +31,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
           BottomNavigationBarItem(
               icon: const Icon(Icons.home),
               label: 'Home',
+              backgroundColor: Colors.grey[800],
+              tooltip: 'Home Screen'),
+          BottomNavigationBarItem(
+              icon: const Icon(
+                Icons.add,
+              ),
+              label: 'Add Items',
               backgroundColor: Colors.grey[800],
               tooltip: 'Home Screen'),
           BottomNavigationBarItem(
