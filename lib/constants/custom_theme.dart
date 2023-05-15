@@ -16,6 +16,7 @@ class CustomTheme {
     ),
     scaffoldBackgroundColor: Colors.grey[900],
     appBarTheme: AppBarTheme(
+      toolbarHeight: 56,
       foregroundColor: Colors.white,
       elevation: 0,
       titleTextStyle: const TextStyle(
