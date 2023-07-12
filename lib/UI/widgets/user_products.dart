@@ -8,10 +8,12 @@ class UserProductItem extends StatefulWidget {
     required this.name,
     required this.imageUrl,
     required this.price,
+    required this.id,
   }) : super(key: key);
   final String name;
   final String imageUrl;
   final double price;
+  final String id;
 
   @override
   State<UserProductItem> createState() => _UserProductItemState();
@@ -27,7 +29,9 @@ class _UserProductItemState extends State<UserProductItem> {
         leading: CircleAvatar(
             backgroundImage: NetworkImage(widget.imageUrl), radius: 30),
         title: Text(
+          maxLines: 1,
           widget.name,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(
@@ -54,8 +58,9 @@ class _UserProductItemState extends State<UserProductItem> {
                     builder: ((context) => Padding(
                           padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: const ProductBottomSheet(
-                            isNewItem: true,
+                          child: ProductBottomSheet(
+                            isNewItem: false,
+                            id: widget.id,
                           ),
                         )),
                   ),
@@ -65,7 +70,7 @@ class _UserProductItemState extends State<UserProductItem> {
                       Icons.delete,
                       color: Colors.redAccent,
                     ),
-                    onPressed: () => null),
+                    onPressed: () {}),
               ],
             )),
       ),

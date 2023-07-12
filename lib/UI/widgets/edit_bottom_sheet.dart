@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/models/product_provider.dart';
+import 'package:newshopapp/models/user_product_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductBottomSheet extends StatefulWidget {
   const ProductBottomSheet({
     required this.isNewItem,
+    this.id,
     super.key,
   });
   final bool isNewItem;
+  final String? id;
 
   @override
   State<ProductBottomSheet> createState() => ProductBottomSheetState();
@@ -16,8 +21,18 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
     return SizedBox(height: height ?? 10);
   }
 
+  Product? currentUserProduct;
+
+  bool isCurrentProduct(String? id) {
+    return (id != null) ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.id != null) {
+      currentUserProduct =
+          Provider.of<UserProductsList>(context).getUserProductById(widget.id!);
+    }
     return Container(
       padding: const EdgeInsets.all(20),
       child: Form(
@@ -36,11 +51,16 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
               ),
               buildVerticalSpace(20),
               TextFormField(
+                initialValue:
+                    isCurrentProduct(widget.id) ? currentUserProduct!.name : "",
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(labelText: "Name"),
               ),
               buildVerticalSpace(),
               TextFormField(
+                  initialValue: isCurrentProduct(widget.id)
+                      ? currentUserProduct!.price.toString()
+                      : "",
                   decoration: const InputDecoration(
                     labelText: "Price",
                   ),
@@ -48,6 +68,9 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
                   textInputAction: TextInputAction.next),
               buildVerticalSpace(),
               TextFormField(
+                initialValue: isCurrentProduct(widget.id)
+                    ? currentUserProduct!.description
+                    : "",
                 maxLines: 10,
                 minLines: 3,
                 keyboardType: TextInputType.multiline,

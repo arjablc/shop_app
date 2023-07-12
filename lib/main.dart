@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/models/user_product_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'UI/screen/cart_screen.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsList()),
         ChangeNotifierProvider(create: (_) => Cart()),
-        ChangeNotifierProvider(create: (_) => Orders())
+        ChangeNotifierProvider(create: (_) => Orders()),
+        ChangeNotifierProvider(create: (_) => UserProductsList())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
