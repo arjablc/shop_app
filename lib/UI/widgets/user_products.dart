@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'edit_bottom_sheet.dart';
+
 class UserProductItem extends StatefulWidget {
   const UserProductItem({
     Key? key,
@@ -40,39 +42,22 @@ class _UserProductItemState extends State<UserProductItem> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
-                  onPressed: () => showDialog(
+                  onPressed: () => showModalBottomSheet(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      scrollable: true,
-                      backgroundColor: Colors.grey[700],
-                      elevation: 0,
-                      title: Text(
-                        "Edit your product",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(fontSize: 20),
-                      ),
-                      content: Form(
-                        child: SingleChildScrollView(
-                          child: Column(children: [
-                            // const Text("Edit your Product"),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  // hintText: "Name:",
-                                  labelText: "Name of your product",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                            ),
-                            TextFormField(),
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                            )
-                          ]),
-                        ),
-                      ),
+                    isDismissible: true,
+                    useSafeArea: false,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
+                    backgroundColor: Colors.grey[800],
+                    builder: ((context) => Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: const ProductBottomSheet(
+                            isNewItem: true,
+                          ),
+                        )),
                   ),
                 ),
                 IconButton(

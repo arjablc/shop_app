@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/UI/screen/cart_screen.dart';
-import 'package:newshopapp/UI/screen/orders_screen.dart';
-import 'package:newshopapp/UI/screen/overview_screen.dart';
-import 'package:newshopapp/models/orders_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'UI/screen/cart_screen.dart';
+import 'UI/screen/orders_screen.dart';
+import 'models/orders_provider.dart';
 import 'UI/screen/bottom_nav_bar.dart';
 import 'constants/custom_theme.dart';
 import 'models/cart_provider.dart';

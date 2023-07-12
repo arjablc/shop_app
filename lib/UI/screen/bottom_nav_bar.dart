@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/UI/screen/new_product_screen.dart';
+// import 'package:newshopapp/UI/screen/new_product_screen.dart';
 import 'package:newshopapp/UI/screen/orders_screen.dart';
 import 'package:newshopapp/UI/screen/user_product_screen.dart';
 
@@ -37,7 +37,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 tooltip: 'Home Screen'),
             BottomNavigationBarItem(
                 icon: const Icon(
-                  Icons.add,
+                  Icons.add_circle_outline,
                 ),
                 label: 'Add Items',
                 backgroundColor: Colors.grey[800],
