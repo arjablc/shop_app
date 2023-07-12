@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/models/product_provider.dart';
+
+import 'product_provider.dart';
 
 class ProductsList with ChangeNotifier {
   //ignore: prefer_final_fields
-  final List<Product> _items = [
+  final List<Product> _nonUserItems = [
     Product(
       id: 'p1',
       name: 'Red Shirt',
@@ -38,10 +39,24 @@ class ProductsList with ChangeNotifier {
     ),
   ];
 
-  List<Product> get items => [..._items];
+  List<Product> get nonUserItems => [..._nonUserItems];
+
+  final List<Product> _userProductList = [
+    Product(
+        id: 'u1',
+        name: "Dummy User Product",
+        description: "Just a product made to check the logic of the app",
+        imageUrl:
+            'https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg',
+        price: 100.00)
+  ];
+
+  List<Product> get userProducts => [..._userProductList];
+
+  List<Product> get finalListOfItems => [..._userProductList, ..._nonUserItems];
 
   Product findById(String id) {
-    return items.firstWhere((element) => element.id == id);
+    return finalListOfItems.firstWhere((element) => element.id == id);
   }
 
   final List<Product> _favoriteItems = [];

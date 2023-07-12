@@ -14,8 +14,9 @@ class ProcductOverviewGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<ProductsList>(context);
-    final products =
-        isShowFavorites ? productData.favoriteItems : productData.items;
+    final products = isShowFavorites
+        ? productData.favoriteItems
+        : productData.finalListOfItems;
     return GridView.builder(
       padding: const EdgeInsets.all(5),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

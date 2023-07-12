@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newshopapp/models/product_provider.dart';
-import 'package:newshopapp/models/user_product_provider.dart';
+import 'package:newshopapp/models/products_list_provider.dart';
+// import 'package:newshopapp/models/user_product_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductBottomSheet extends StatefulWidget {
@@ -27,15 +28,28 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
     return (id != null) ? true : false;
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void saveForm() {
+    _formKey.currentState!.save();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.id != null) {
       currentUserProduct =
-          Provider.of<UserProductsList>(context).getUserProductById(widget.id!);
+          Provider.of<ProductsList>(context).findById(widget.id!);
     }
     return Container(
       padding: const EdgeInsets.all(20),
       child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -85,18 +99,16 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed:
-                        //TODO: Implement the logic for submit and cancel button
-                        () => null,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text("Cancel"),
                   ),
                   const SizedBox(
                     width: 20,
                   ),
                   TextButton(
-                    onPressed:
-                        //TODO: Implement the logic for submit and cancel button
-                        () => null,
+                    onPressed: saveForm,
                     child: const Text("Submit"),
                   )
                 ],

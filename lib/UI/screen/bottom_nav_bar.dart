@@ -28,6 +28,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Scaffold(
         //appBar: AppBar(title: Text('hello')),
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
