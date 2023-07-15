@@ -59,6 +59,11 @@ class ProductsList with ChangeNotifier {
     return finalListOfItems.firstWhere((element) => element.id == id);
   }
 
+  void addUserProduct(Product product) {
+    _userProductList.add(product);
+    notifyListeners();
+  }
+
   final List<Product> _favoriteItems = [];
 
   List<Product> get favoriteItems => [..._favoriteItems];

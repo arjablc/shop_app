@@ -16,6 +16,8 @@ class CustomGridTile extends StatelessWidget {
         .pushNamed(ProductDetailScreen.routeName, arguments: id);
   }
 
+  final String noImage = 'assets/images/img_error.png';
+
   @override
   Widget build(BuildContext context) {
     final Product product = Provider.of<Product>(context, listen: false);
@@ -36,26 +38,36 @@ class CustomGridTile extends StatelessWidget {
                   height: constraints.maxHeight,
                   width: constraints.maxWidth,
                   child: ClipRRect(
-                    //*Image from network
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      product.imageUrl,
-                      fit: BoxFit.cover,
-                      // for the smooth appearence of images
-                      frameBuilder:
-                          (context, child, frame, wasSynchronouslyLoaded) {
-                        if (!wasSynchronouslyLoaded) {
-                          return AnimatedOpacity(
-                            opacity: frame == null ? 0 : 1,
-                            duration: const Duration(milliseconds: 500),
-                            child: child,
-                          );
-                        } else {
-                          return child;
-                        }
-                      },
-                    ),
-                  ),
+                      //*Image from network and form assets if No images
+                      borderRadius: BorderRadius.circular(20),
+                      child: (product.imageUrl.isNotEmpty)
+                          ? Image.network(
+                              product.imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                color: Colors.grey,
+                                child: const Text("😒"),
+                              ),
+
+                              // for the smooth appearence of images
+                              frameBuilder: (context, child, frame,
+                                  wasSynchronouslyLoaded) {
+                                if (!wasSynchronouslyLoaded) {
+                                  return AnimatedOpacity(
+                                    opacity: frame == null ? 0 : 1,
+                                    duration: const Duration(milliseconds: 500),
+                                    child: child,
+                                  );
+                                } else {
+                                  return child;
+                                }
+                              },
+                            )
+                          : Image.asset(
+                              noImage,
+                              fit: BoxFit.cover,
+                            )),
                 ),
                 Container(
                     height: constraints.maxHeight,
@@ -85,85 +97,8 @@ class CustomGridTile extends StatelessWidget {
                             end: Alignment.center,
                             stops: const [(0.0), (0.5)]),
                       ),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10.0, 5, 10, 10),
-                                child: Row(
-                                  //*the icon button row
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Material(
-                                      borderRadius: BorderRadius.circular(100),
-                                      clipBehavior: Clip.hardEdge,
-                                      color: Colors.transparent,
-                                      child: IconButton(
-                                        splashColor: Colors.redAccent,
-                                        onPressed: () => productsList
-                                            .toggleFavortie(product),
-                                        icon: Consumer<Product>(
-                                            builder: (context, product, child) {
-                                          return Icon(product.isFavorite
-                                              ? Icons.favorite
-                                              : Icons.favorite_border);
-                                        }),
-                                      ),
-                                    ),
-                                    Consumer<Cart>(
-                                      builder: (context, cart, child) =>
-                                          Material(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: Colors.transparent,
-                                        clipBehavior: Clip.hardEdge,
-                                        child: IconButton(
-                                            splashColor: Colors.red,
-                                            onPressed: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .removeCurrentSnackBar();
-                                              cart.addItem(product.id,
-                                                  product.price, product.name);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                duration: Duration(seconds: 1),
-                                                content:
-                                                    Text("Added Item to Cart"),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                              ));
-                                            },
-                                            icon: cart.isOnCart(product.id)
-                                                ? const Icon(
-                                                    Icons.shopping_cart)
-                                                : const Icon(Icons
-                                                    .shopping_cart_outlined)),
-                                      ),
-                                    )
-                                  ],
-                                )),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(10.0, 0, 10, 5),
-                              child: Row(
-                                //* the row of the title text
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      product.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ]),
+                      child: GridTileContent(
+                          productsList: productsList, product: product),
                     ))
               ],
             );
@@ -171,5 +106,82 @@ class CustomGridTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class GridTileContent extends StatelessWidget {
+  const GridTileContent({
+    super.key,
+    required this.productsList,
+    required this.product,
+  });
+
+  final ProductsList productsList;
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5, 10, 10),
+          child: Row(
+            //*the icon button row
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Material(
+                borderRadius: BorderRadius.circular(100),
+                clipBehavior: Clip.hardEdge,
+                color: Colors.transparent,
+                child: IconButton(
+                  splashColor: Colors.redAccent,
+                  onPressed: () => productsList.toggleFavortie(product),
+                  icon: Consumer<Product>(builder: (context, product, child) {
+                    return Icon(product.isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border);
+                  }),
+                ),
+              ),
+              Consumer<Cart>(
+                builder: (context, cart, child) => Material(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.transparent,
+                  clipBehavior: Clip.hardEdge,
+                  child: IconButton(
+                      splashColor: Colors.red,
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                        cart.addItem(product.id, product.price, product.name);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 1),
+                          content: Text("Added Item to Cart"),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+                      },
+                      icon: cart.isOnCart(product.id)
+                          ? const Icon(Icons.shopping_cart)
+                          : const Icon(Icons.shopping_cart_outlined)),
+                ),
+              )
+            ],
+          )),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 0, 10, 5),
+        child: Row(
+          //* the row of the title text
+          children: [
+            Expanded(
+              child: Text(
+                product.name,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+          ],
+        ),
+      )
+    ]);
   }
 }

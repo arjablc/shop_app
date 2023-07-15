@@ -30,9 +30,18 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void saveForm() {
+  void saveForm(Function saveOnList) {
     _formKey.currentState!.save();
+    saveOnList(userProduct);
   }
+
+  Product userProduct = Product(
+    id: UniqueKey().toString(),
+    price: 0.0,
+    name: '',
+    description: '',
+    imageUrl: '',
+  );
 
   @override
   void dispose() {
@@ -45,6 +54,8 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
       currentUserProduct =
           Provider.of<ProductsList>(context).findById(widget.id!);
     }
+    final Function saveToList =
+        Provider.of<ProductsList>(context).addUserProduct;
     return Container(
       padding: const EdgeInsets.all(20),
       child: Form(
@@ -65,35 +76,47 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
               ),
               buildVerticalSpace(20),
               TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Value error";
+                  }
+                  return "null";
+                },
                 initialValue:
                     isCurrentProduct(widget.id) ? currentUserProduct!.name : "",
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(labelText: "Name"),
+                onSaved: (newValue) => userProduct.name = newValue.toString(),
+              ),
+              buildVerticalSpace(),
+              TextFormField(
+                initialValue: isCurrentProduct(widget.id)
+                    ? currentUserProduct!.price.toString()
+                    : "",
+                decoration: const InputDecoration(
+                  labelText: "Price",
+                ),
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                onSaved: (newValue) => userProduct.price = double.parse(
+                  newValue.toString(),
+                ),
               ),
               buildVerticalSpace(),
               TextFormField(
                   initialValue: isCurrentProduct(widget.id)
-                      ? currentUserProduct!.price.toString()
+                      ? currentUserProduct!.description
                       : "",
+                  maxLines: 10,
+                  minLines: 3,
+                  keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(
-                    labelText: "Price",
-                  ),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next),
-              buildVerticalSpace(),
-              TextFormField(
-                initialValue: isCurrentProduct(widget.id)
-                    ? currentUserProduct!.description
-                    : "",
-                maxLines: 10,
-                minLines: 3,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                    labelText: "Description",
-                    floatingLabelAlignment: FloatingLabelAlignment.start,
-                    alignLabelWithHint: true),
-                textInputAction: TextInputAction.newline,
-              ),
+                      labelText: "Description",
+                      floatingLabelAlignment: FloatingLabelAlignment.start,
+                      alignLabelWithHint: true),
+                  textInputAction: TextInputAction.newline,
+                  onSaved: (newValue) =>
+                      userProduct.description = newValue.toString()),
               buildVerticalSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -108,7 +131,7 @@ class ProductBottomSheetState extends State<ProductBottomSheet> {
                     width: 20,
                   ),
                   TextButton(
-                    onPressed: saveForm,
+                    onPressed: () => saveForm(saveToList),
                     child: const Text("Submit"),
                   )
                 ],

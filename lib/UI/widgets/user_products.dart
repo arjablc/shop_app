@@ -20,6 +20,15 @@ class UserProductItem extends StatefulWidget {
 }
 
 class _UserProductItemState extends State<UserProductItem> {
+  static const noImage = 'assets/images/img_error.png';
+
+  ImageProvider buildBackgroundImage(String url, String filePath) {
+    if (url.isEmpty) {
+      return AssetImage(filePath);
+    }
+    return NetworkImage(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -27,7 +36,8 @@ class _UserProductItemState extends State<UserProductItem> {
       color: Colors.grey[700],
       child: ListTile(
         leading: CircleAvatar(
-            backgroundImage: NetworkImage(widget.imageUrl), radius: 30),
+            backgroundImage: buildBackgroundImage(widget.imageUrl, noImage),
+            radius: 30),
         title: Text(
           maxLines: 1,
           widget.name,
