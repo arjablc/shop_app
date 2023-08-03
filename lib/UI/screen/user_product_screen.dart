@@ -42,8 +42,9 @@ class UserProductScreen extends StatelessWidget {
           builder: (context) => Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: const ProductBottomSheet(
-              isNewItem: true,
+            child: const ProductEditSheet(
+              isNewProduct: true,
+              productId: '',
             ),
           ),
         ),

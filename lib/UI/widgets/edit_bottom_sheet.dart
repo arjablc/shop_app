@@ -1,141 +1,182 @@
+// import 'dart:js_interop';
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:newshopapp/models/product_provider.dart';
 import 'package:newshopapp/models/products_list_provider.dart';
-// import 'package:newshopapp/models/user_product_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProductBottomSheet extends StatefulWidget {
-  const ProductBottomSheet({
-    required this.isNewItem,
-    this.id,
-    super.key,
-  });
-  final bool isNewItem;
-  final String? id;
+class ProductEditSheet extends StatefulWidget {
+  const ProductEditSheet({
+    Key? key,
+    required this.productId,
+    required this.isNewProduct,
+  }) : super(key: key);
+  final String productId;
+  final bool isNewProduct;
 
   @override
-  State<ProductBottomSheet> createState() => ProductBottomSheetState();
+  State<ProductEditSheet> createState() => _ProductEditSheetState();
 }
 
-class ProductBottomSheetState extends State<ProductBottomSheet> {
-  Widget buildVerticalSpace([double? height]) {
-    return SizedBox(height: height ?? 10);
+class _ProductEditSheetState extends State<ProductEditSheet> {
+  late Product currentProduct;
+  File? _pickedImage;
+  bool changeOldProductImage = false;
+
+  //Init state
+  @override
+  void initState() {
+    currentProduct = widget.isNewProduct
+        ? Product(id: '', name: '', description: '', imageUrl: '', price: 0)
+        : Provider.of<ProductsList>(context, listen: false)
+            .findById(widget.productId);
+    super.initState();
   }
 
-  Product? currentUserProduct;
-
-  bool isCurrentProduct(String? id) {
-    return (id != null) ? true : false;
+  Widget verticalSpace() {
+    return const SizedBox(
+      height: 20,
+    );
   }
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  void saveForm(Function saveOnList) {
-    _formKey.currentState!.save();
-    saveOnList(userProduct);
+// Image picker function
+  Future _pickImageFromGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    setState(() {
+      _pickedImage = File(image.path);
+    });
   }
 
-  Product userProduct = Product(
-    id: UniqueKey().toString(),
-    price: 0.0,
-    name: '',
-    description: '',
-    imageUrl: '',
-  );
-
+// dispose
   @override
   void dispose() {
     super.dispose();
   }
 
+  Widget previewImage(bool newItem) {
+    if (newItem) {
+      if (_pickedImage == null) {
+        return const Icon(Icons.add);
+      } else {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.file(
+            _pickedImage!,
+            fit: BoxFit.cover,
+          ),
+        );
+      }
+    }
+    return currentProduct.imageUrl.isEmpty
+        ? const Icon(Icons.add)
+        : !changeOldProductImage
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  currentProduct.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: _pickedImage == null
+                    ? Image.network(currentProduct.imageUrl)
+                    : Image.file(
+                        _pickedImage!,
+                        fit: BoxFit.cover,
+                      ),
+              );
+  }
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    if (widget.id != null) {
-      currentUserProduct =
-          Provider.of<ProductsList>(context).findById(widget.id!);
-    }
-    final Function saveToList =
-        Provider.of<ProductsList>(context).addUserProduct;
-    return Container(
-      padding: const EdgeInsets.all(20),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 0),
       child: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: _formKey,
+        key: _formkey,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                widget.isNewItem ? "New Product" : "Edit Product",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(fontSize: 25),
-              ),
-              buildVerticalSpace(20),
               TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Value error";
-                  }
-                  return "null";
-                },
-                initialValue:
-                    isCurrentProduct(widget.id) ? currentUserProduct!.name : "",
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(labelText: "Name"),
-                onSaved: (newValue) => userProduct.name = newValue.toString(),
-              ),
-              buildVerticalSpace(),
-              TextFormField(
-                initialValue: isCurrentProduct(widget.id)
-                    ? currentUserProduct!.price.toString()
-                    : "",
+                initialValue: currentProduct.name,
                 decoration: const InputDecoration(
-                  labelText: "Price",
+                  labelText: "Name",
                 ),
-                keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
-                onSaved: (newValue) => userProduct.price = double.parse(
-                  newValue.toString(),
-                ),
               ),
-              buildVerticalSpace(),
+              verticalSpace(),
               TextFormField(
-                  initialValue: isCurrentProduct(widget.id)
-                      ? currentUserProduct!.description
-                      : "",
-                  maxLines: 10,
-                  minLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                      labelText: "Description",
-                      floatingLabelAlignment: FloatingLabelAlignment.start,
-                      alignLabelWithHint: true),
-                  textInputAction: TextInputAction.newline,
-                  onSaved: (newValue) =>
-                      userProduct.description = newValue.toString()),
-              buildVerticalSpace(),
+                initialValue: currentProduct.description,
+                keyboardType: TextInputType.multiline,
+                maxLines: 7,
+                minLines: 3,
+                decoration: const InputDecoration(
+                    labelText: "Description", alignLabelWithHint: true),
+              ),
+              verticalSpace(),
+              TextFormField(
+                initialValue: currentProduct.price.toString(),
+                decoration: const InputDecoration(labelText: "Price"),
+                keyboardType: TextInputType.number,
+              ),
+              verticalSpace(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel"),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          changeOldProductImage =
+                              widget.isNewProduct ? false : true;
+                        });
+                        _pickImageFromGallery();
+                      },
+                      child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                                color: Colors.grey,
+                                width: 2,
+                                style: BorderStyle.solid),
+                          ),
+                          child: previewImage(widget.isNewProduct)),
+                    ),
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  TextButton(
-                    onPressed: () => saveForm(saveToList),
-                    child: const Text("Submit"),
+                  Flexible(
+                    flex: 2,
+                    child: TextFormField(
+                      initialValue: currentProduct.imageUrl,
+                      decoration: const InputDecoration(labelText: "Image Url"),
+                    ),
                   )
                 ],
-              )
+              ),
+              verticalSpace(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style:
+                        TextButton.styleFrom(backgroundColor: Colors.grey[850]),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(onPressed: () => null, child: const Text("Submit"))
+                ],
+              ),
+              verticalSpace()
             ],
           ),
         ),

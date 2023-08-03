@@ -37,8 +37,7 @@ class CustomTheme {
         enableFeedback: false,
       ),
       inputDecorationTheme: InputDecorationTheme(
-          labelStyle:
-              const TextStyle(color: Colors.white, fontFamily: 'Nunito'),
+          labelStyle: const TextStyle(color: Colors.grey, fontFamily: 'Nunito'),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: const BorderSide(color: Colors.white),

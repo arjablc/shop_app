@@ -65,12 +65,15 @@ class _UserProductItemState extends State<UserProductItem> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     backgroundColor: Colors.grey[800],
-                    builder: ((context) => Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: ProductBottomSheet(
-                            isNewItem: false,
-                            id: widget.id,
+                    builder: ((context) => SafeArea(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: ProductEditSheet(
+                              isNewProduct: false,
+                              productId: widget.id,
+                            ),
                           ),
                         )),
                   ),
