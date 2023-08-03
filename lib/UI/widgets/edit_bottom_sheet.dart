@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:newshopapp/helpers/user_product_form_validator.dart';
 import 'package:newshopapp/models/product_provider.dart';
 import 'package:newshopapp/models/products_list_provider.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
   late Product currentProduct;
   File? _pickedImage;
   bool changeOldProductImage = false;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   //Init state
   @override
@@ -94,7 +96,18 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
               );
   }
 
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  void buttonSubmit() {
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
+      if (widget.isNewProduct) {
+        Provider.of<ProductsList>(context, listen: false)
+            .addUserProduct(currentProduct);
+      }
+      Provider.of<ProductsList>(context, listen: false).updateUi();
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -104,14 +117,21 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //name
               TextFormField(
+                maxLength: 100,
                 initialValue: currentProduct.name,
+                validator: UserProductValidation.validateName,
                 decoration: const InputDecoration(
                   labelText: "Name",
                 ),
                 textInputAction: TextInputAction.next,
+                onSaved: (newValue) {
+                  currentProduct.name = newValue!;
+                },
               ),
               verticalSpace(),
+              //description
               TextFormField(
                 initialValue: currentProduct.description,
                 keyboardType: TextInputType.multiline,
@@ -119,12 +139,24 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                 minLines: 3,
                 decoration: const InputDecoration(
                     labelText: "Description", alignLabelWithHint: true),
+                onSaved: (newValue) {
+                  if (newValue == null) {
+                    return;
+                  }
+                  currentProduct.description = newValue;
+                },
               ),
+
               verticalSpace(),
+              //Price
               TextFormField(
                 initialValue: currentProduct.price.toString(),
                 decoration: const InputDecoration(labelText: "Price"),
                 keyboardType: TextInputType.number,
+                validator: UserProductValidation.validatePrice,
+                onSaved: (newValue) {
+                  currentProduct.price = double.parse(newValue!);
+                },
               ),
               verticalSpace(),
               Row(
@@ -159,6 +191,12 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                     child: TextFormField(
                       initialValue: currentProduct.imageUrl,
                       decoration: const InputDecoration(labelText: "Image Url"),
+                      onSaved: (newValue) {
+                        if (newValue == null) {
+                          return;
+                        }
+                        currentProduct.imageUrl = newValue;
+                      },
                     ),
                   )
                 ],
@@ -173,7 +211,8 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                         TextButton.styleFrom(backgroundColor: Colors.grey[850]),
                     child: const Text("Cancel"),
                   ),
-                  TextButton(onPressed: () => null, child: const Text("Submit"))
+                  TextButton(
+                      onPressed: buttonSubmit, child: const Text("Submit"))
                 ],
               ),
               verticalSpace()

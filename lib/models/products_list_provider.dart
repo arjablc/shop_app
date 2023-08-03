@@ -78,4 +78,8 @@ class ProductsList with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void updateUi() {
+    notifyListeners();
+  }
 }
