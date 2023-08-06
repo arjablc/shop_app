@@ -13,6 +13,9 @@ class UserProductValidation {
       return "The price must be a number";
     }
 
+    if (double.parse(value) < 0) {
+      return "Negative Pricing ? You want loss ? ";
+    }
     return null;
   }
 }
