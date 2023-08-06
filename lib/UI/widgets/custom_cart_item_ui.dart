@@ -29,7 +29,7 @@ class CartItemUi extends StatelessWidget {
                     backgroundColor: Colors.grey[700],
                     title: const Text('Are you sure about that??'),
                     titleTextStyle: Theme.of(context).textTheme.titleMedium,
-                    actionsAlignment: MainAxisAlignment.spaceBetween,
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
                     actions: [
                       TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
@@ -48,15 +48,15 @@ class CartItemUi extends StatelessWidget {
         },
         key: ValueKey(cartId),
         direction: DismissDirection.endToStart,
-        background: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Align(
-              alignment: Alignment.centerRight,
-              child: Icon(
-                color: Colors.red,
-                Icons.delete,
-                size: 40,
-              )),
+        background: Container(
+          alignment: Alignment.centerRight,
+          color: Colors.red,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: const Icon(
+            color: Colors.white,
+            Icons.delete,
+            size: 40,
+          ),
         ),
         onDismissed: (direction) =>
             Provider.of<Cart>(context, listen: false).removeItems(cartId),
