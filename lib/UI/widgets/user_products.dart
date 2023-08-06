@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/models/products_list_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'edit_bottom_sheet.dart';
 
-class UserProductItem extends StatefulWidget {
+class UserProductItem extends StatelessWidget {
   const UserProductItem({
     Key? key,
     required this.name,
@@ -15,11 +17,6 @@ class UserProductItem extends StatefulWidget {
   final double price;
   final String id;
 
-  @override
-  State<UserProductItem> createState() => _UserProductItemState();
-}
-
-class _UserProductItemState extends State<UserProductItem> {
   static const noImage = 'assets/images/img_error.png';
 
   ImageProvider buildBackgroundImage(String url, String filePath) {
@@ -36,16 +33,16 @@ class _UserProductItemState extends State<UserProductItem> {
       color: Colors.grey[700],
       child: ListTile(
         leading: CircleAvatar(
-            backgroundImage: buildBackgroundImage(widget.imageUrl, noImage),
+            backgroundImage: buildBackgroundImage(imageUrl, noImage),
             radius: 30),
         title: Text(
           maxLines: 1,
-          widget.name,
+          name,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(
-          "\$ ${widget.price}",
+          "\$ $price",
           style:
               Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15),
         ),
@@ -59,7 +56,7 @@ class _UserProductItemState extends State<UserProductItem> {
                   onPressed: () => showModalBottomSheet(
                     context: context,
                     isDismissible: true,
-                    useSafeArea: false,
+                    useSafeArea: true,
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -72,7 +69,7 @@ class _UserProductItemState extends State<UserProductItem> {
                                     MediaQuery.of(context).viewInsets.bottom),
                             child: ProductEditSheet(
                               isNewProduct: false,
-                              productId: widget.id,
+                              productId: id,
                             ),
                           ),
                         )),
@@ -83,7 +80,9 @@ class _UserProductItemState extends State<UserProductItem> {
                       Icons.delete,
                       color: Colors.redAccent,
                     ),
-                    onPressed: () {}),
+                    onPressed: () =>
+                        Provider.of<ProductsList>(context, listen: false)
+                            .removeUserProduct(id)),
               ],
             )),
       ),

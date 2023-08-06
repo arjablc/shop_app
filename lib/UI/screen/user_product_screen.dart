@@ -32,7 +32,7 @@ class UserProductScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
           isDismissible: true,
-          useSafeArea: false,
+          useSafeArea: true,
           isScrollControlled: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),

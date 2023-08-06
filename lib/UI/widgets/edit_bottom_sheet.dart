@@ -116,13 +116,20 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
         key: _formkey,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                widget.isNewProduct ? "New Prodcut" : "Edit Product",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              verticalSpace(),
               //name
               TextFormField(
                 maxLength: 100,
                 initialValue: currentProduct.name,
                 validator: UserProductValidation.validateName,
                 decoration: const InputDecoration(
+                  counterStyle: TextStyle(color: Colors.white),
                   labelText: "Name",
                 ),
                 textInputAction: TextInputAction.next,

@@ -64,6 +64,15 @@ class ProductsList with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeUserProduct(String id) {
+    final currentProduct = findById(id);
+    if (_userProductList.contains(currentProduct)) {
+      _userProductList.remove(currentProduct);
+      notifyListeners();
+    }
+    return;
+  }
+
   final List<Product> _favoriteItems = [];
 
   List<Product> get favoriteItems => [..._favoriteItems];
