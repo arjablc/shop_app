@@ -18,4 +18,13 @@ class UserProductValidation {
     }
     return null;
   }
+
+  static String? validateDescription(value) {
+    if (value.isEmpty) {
+      return "Please describe your prodcut";
+    } else if (value.toString().length < 10) {
+      return "Description must be min 10 char long";
+    }
+    return null;
+  }
 }
