@@ -15,6 +15,3 @@ A shop application made from flutter with modern UI.
 # Samples 
 
 <img src ="samples/sample_1.png" height = "100%" width = "40%"> <img src ="samples/sample_2.png" height = "100%" width = "40%"> <img src ="samples/sample_3.png" height = "100%" width = "40%"> <img src ="samples/sample_4_new.png" height = "100%" width = "40%"> 
-
-
-after update 
