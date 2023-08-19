@@ -1,22 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class CartItem {
-  final String id;
-  final String name;
-  final int quantity;
-  final double price;
+import '../models/cart_model.dart';
 
-  CartItem(
-      {required this.id,
-      required this.name,
-      required this.quantity,
-      required this.price});
-}
+class CartProvider with ChangeNotifier {
+  final Map<String, CartItemModel> _items = {};
 
-class Cart with ChangeNotifier {
-  final Map<String, CartItem> _items = {};
-
-  Map<String, CartItem> get items => {..._items};
+  Map<String, CartItemModel> get items => {..._items};
 
   int get cartItemCount => _items.length;
 
@@ -36,14 +25,16 @@ class Cart with ChangeNotifier {
     if (items.containsKey(prodId)) {
       _items.update(
           prodId,
-          (oldItem) => CartItem(
+          (oldItem) => CartItemModel(
               id: oldItem.id,
               name: oldItem.name,
               quantity: oldItem.quantity + 1,
               price: oldItem.price));
     } else {
-      _items.putIfAbsent(prodId,
-          () => CartItem(id: prodId, name: name, price: price, quantity: 1));
+      _items.putIfAbsent(
+          prodId,
+          () =>
+              CartItemModel(id: prodId, name: name, price: price, quantity: 1));
     }
     notifyListeners();
   }
@@ -66,7 +57,7 @@ class Cart with ChangeNotifier {
     } else if (_items[id]!.quantity > 1) {
       _items.update(
           id,
-          (value) => CartItem(
+          (value) => CartItemModel(
               id: value.id,
               name: value.name,
               quantity: value.quantity - 1,

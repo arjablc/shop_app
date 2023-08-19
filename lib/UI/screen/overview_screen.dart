@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/models/cart_provider.dart';
+import 'package:newshopapp/models/cart_model.dart';
+import 'package:newshopapp/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../UI/screen/cart_screen.dart';
@@ -22,7 +23,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   bool onlyFavorites = false;
   @override
   Widget build(BuildContext context) {
-    final int count = Provider.of<Cart>(context).cartItemCount;
+    final int count = Provider.of<CartProvider>(context).cartItemCount;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome to your Shop"),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/models/products_list_provider.dart';
+import 'package:newshopapp/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_bottom_sheet.dart';
@@ -81,7 +81,7 @@ class UserProductItem extends StatelessWidget {
                       color: Colors.redAccent,
                     ),
                     onPressed: () =>
-                        Provider.of<ProductsList>(context, listen: false)
+                        Provider.of<ProductProvider>(context, listen: false)
                             .removeUserProduct(id)),
               ],
             )),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newshopapp/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
-
-import './../../models/cart_provider.dart';
 
 class CartItemUi extends StatelessWidget {
   const CartItemUi({
@@ -59,7 +58,8 @@ class CartItemUi extends StatelessWidget {
           ),
         ),
         onDismissed: (direction) =>
-            Provider.of<Cart>(context, listen: false).removeItems(cartId),
+            Provider.of<CartProvider>(context, listen: false)
+                .removeItems(cartId),
         child: Card(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           shape:

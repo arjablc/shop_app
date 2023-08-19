@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 // import 'package:provider/provider.dart';
 import 'dart:math';
 
-import '../../models/cart_provider.dart';
+import 'package:newshopapp/models/cart_model.dart';
 
 class CustomOrdersUi extends StatefulWidget {
   const CustomOrdersUi({
@@ -16,7 +16,7 @@ class CustomOrdersUi extends StatefulWidget {
 
   final String id;
   final double price;
-  final List<CartItem> orders;
+  final List<CartItemModel> orders;
   final DateTime dateTime;
 
   @override

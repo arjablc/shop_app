@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/cart_provider.dart';
-import '../../models/product_provider.dart';
+import '../../providers/cart_provider.dart';
+import '../../models/product_model.dart';
+import '../../providers/product_provider.dart';
 import '../screen/product_detail_screen.dart';
-import '../../models/products_list_provider.dart';
 
 class CustomGridTile extends StatelessWidget {
   const CustomGridTile({
     Key? key,
+    required this.id,
   }) : super(key: key);
+  final String id;
 
   void navigateToDetailScreen(String id, BuildContext context) {
     Navigator.of(context)
@@ -20,9 +22,8 @@ class CustomGridTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = Provider.of<Product>(context, listen: false);
-    final ProductsList productsList = Provider.of<ProductsList>(context);
-
+    final ProductProvider productsList = Provider.of<ProductProvider>(context);
+    final Product product = productsList.findById(id);
     return GestureDetector(
       onTap: () => navigateToDetailScreen(product.id, context),
       child: Container(
@@ -116,7 +117,7 @@ class GridTileContent extends StatelessWidget {
     required this.product,
   });
 
-  final ProductsList productsList;
+  final ProductProvider productsList;
   final Product product;
 
   @override
@@ -142,7 +143,7 @@ class GridTileContent extends StatelessWidget {
                   }),
                 ),
               ),
-              Consumer<Cart>(
+              Consumer<CartProvider>(
                 builder: (context, cart, child) => Material(
                   borderRadius: BorderRadius.circular(100),
                   color: Colors.transparent,

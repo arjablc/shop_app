@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'product_provider.dart';
+import '../models/product_model.dart';
 
-class ProductsList with ChangeNotifier {
+class ProductProvider with ChangeNotifier {
   //ignore: prefer_final_fields
   final List<Product> _nonUserItems = [
     Product(
@@ -78,13 +78,7 @@ class ProductsList with ChangeNotifier {
   List<Product> get favoriteItems => [..._favoriteItems];
 
   void toggleFavortie(Product product) {
-    if (_favoriteItems.contains(product)) {
-      product.isFavorite = false;
-      _favoriteItems.remove(product);
-    } else {
-      product.isFavorite = true;
-      _favoriteItems.add(product);
-    }
+    product.toggleFavorite();
     notifyListeners();
   }
 

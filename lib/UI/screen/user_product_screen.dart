@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newshopapp/UI/widgets/edit_bottom_sheet.dart';
 import 'package:newshopapp/UI/widgets/user_products.dart';
-import 'package:newshopapp/models/products_list_provider.dart';
+import 'package:newshopapp/providers/product_provider.dart';
 // import 'package:newshopapp/models/user_product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class UserProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<ProductsList>(context).userProducts;
+    final productData = Provider.of<ProductProvider>(context).userProducts;
     return Scaffold(
       appBar: AppBar(title: const Text("User Products")),
       body: Padding(

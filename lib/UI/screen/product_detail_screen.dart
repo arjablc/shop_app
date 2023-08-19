@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../models/products_list_provider.dart';
+import '../../providers/product_provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   static const routeName = 'product-detail';
@@ -20,7 +20,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)!.settings.arguments.toString();
     final product =
-        Provider.of<ProductsList>(context, listen: false).findById(id);
+        Provider.of<ProductProvider>(context, listen: false).findById(id);
 
     return Scaffold(
       appBar: AppBar(

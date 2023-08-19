@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/products_list_provider.dart';
+import '../../providers/product_provider.dart';
 import 'custom_grid_tile.dart';
 
 class ProcductOverviewGrid extends StatelessWidget {
@@ -13,7 +13,7 @@ class ProcductOverviewGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<ProductsList>(context);
+    final productData = Provider.of<ProductProvider>(context);
     final products = isShowFavorites
         ? productData.favoriteItems
         : productData.finalListOfItems;
@@ -25,8 +25,7 @@ class ProcductOverviewGrid extends StatelessWidget {
       ),
       itemCount: products.length,
       itemBuilder: (BuildContext context, int index) {
-        return ChangeNotifierProvider.value(
-            value: products[index], child: const CustomGridTile());
+        return CustomGridTile(id: products[index].id);
       },
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:newshopapp/models/cart_provider.dart';
+import 'package:newshopapp/providers/cart_provider.dart';
+import 'package:newshopapp/providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/orders_provider.dart';
 import '../widgets/custom_cart_item_ui.dart';
 
 class CartScreen extends StatelessWidget {
@@ -12,9 +12,9 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    final cart = Provider.of<CartProvider>(context);
     final double totalPrice = cart.totalPrice;
-    final orders = Provider.of<Orders>(context, listen: false);
+    final orders = Provider.of<OrdersProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Your Cart')),
       body: Column(children: [

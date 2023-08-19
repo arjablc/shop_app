@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newshopapp/helpers/user_product_form_validator.dart';
-import 'package:newshopapp/models/product_provider.dart';
-import 'package:newshopapp/models/products_list_provider.dart';
+import 'package:newshopapp/models/product_model.dart';
+import 'package:newshopapp/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductEditSheet extends StatefulWidget {
@@ -33,7 +33,7 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
   void initState() {
     currentProduct = widget.isNewProduct
         ? Product(id: '', name: '', description: '', imageUrl: '', price: 0)
-        : Provider.of<ProductsList>(context, listen: false)
+        : Provider.of<ProductProvider>(context, listen: false)
             .findById(widget.productId);
     super.initState();
   }
@@ -100,10 +100,10 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
       if (widget.isNewProduct) {
-        Provider.of<ProductsList>(context, listen: false)
+        Provider.of<ProductProvider>(context, listen: false)
             .addUserProduct(currentProduct);
       }
-      Provider.of<ProductsList>(context, listen: false).updateUi();
+      Provider.of<ProductProvider>(context, listen: false).updateUi();
       Navigator.pop(context);
     }
   }

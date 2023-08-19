@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/products_list_provider.dart';
+import '../../providers/product_provider.dart';
 import '../widgets/overview_grid.dart';
 
 class FavotireScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class FavotireScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<ProductsList>(context);
+    final productData = Provider.of<ProductProvider>(context);
     final bool isAnyFavorite = productData.favoriteItems.isEmpty ? false : true;
     return Scaffold(
       appBar: AppBar(title: const Text('Favorites')),
