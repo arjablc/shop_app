@@ -22,8 +22,9 @@ class CustomGridTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductProvider productsList = Provider.of<ProductProvider>(context);
-    final Product product = productsList.findById(id);
+    final ProductProvider productProvider =
+        Provider.of<ProductProvider>(context);
+    final Product product = productProvider.findById(id);
     return GestureDetector(
       onTap: () => navigateToDetailScreen(product.id, context),
       child: Container(
@@ -99,7 +100,7 @@ class CustomGridTile extends StatelessWidget {
                             stops: const [(0.0), (0.5)]),
                       ),
                       child: GridTileContent(
-                          productsList: productsList, product: product),
+                          productsList: productProvider, product: product),
                     ))
               ],
             );
@@ -134,14 +135,11 @@ class GridTileContent extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 color: Colors.transparent,
                 child: IconButton(
-                  splashColor: Colors.redAccent,
-                  onPressed: () => productsList.toggleFavortie(product),
-                  icon: Consumer<Product>(builder: (context, product, child) {
-                    return Icon(product.isFavorite
+                    splashColor: Colors.redAccent,
+                    onPressed: () => productsList.toggleFavortie(product),
+                    icon: Icon(product.isFavorite
                         ? Icons.favorite
-                        : Icons.favorite_border);
-                  }),
-                ),
+                        : Icons.favorite_border)),
               ),
               Consumer<CartProvider>(
                 builder: (context, cart, child) => Material(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/models/cart_model.dart';
 import 'package:newshopapp/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 

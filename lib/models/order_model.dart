@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:newshopapp/models/cart_model.dart';
 
 class OrderItems {

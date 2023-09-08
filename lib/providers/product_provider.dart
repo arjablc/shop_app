@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/product_model.dart';
+import 'package:http/http.dart' as http;
 
 class ProductProvider with ChangeNotifier {
   //ignore: prefer_final_fields
@@ -59,7 +60,22 @@ class ProductProvider with ChangeNotifier {
     return finalListOfItems.firstWhere((element) => element.id == id);
   }
 
-  void addUserProduct(Product product) {
+  void addUserProduct(Product product) async {
+    try {
+      http.post(
+          Uri.parse(
+              "https://shop-app-68146-default-rtdb.asia-southeast1.firebasedatabase.app/"),
+          body: {
+            "titile": product.name,
+            "description": product.description,
+            "price": product.price,
+            "imageUrl": product.imageUrl,
+            "isFavorite": product.isFavorite
+          });
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
     _userProductList.add(product);
     notifyListeners();
   }
@@ -78,6 +94,11 @@ class ProductProvider with ChangeNotifier {
   List<Product> get favoriteItems => [..._favoriteItems];
 
   void toggleFavortie(Product product) {
+    if (_favoriteItems.contains(product)) {
+      _favoriteItems.remove(product);
+    } else {
+      _favoriteItems.add(product);
+    }
     product.toggleFavorite();
     notifyListeners();
   }
