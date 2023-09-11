@@ -51,7 +51,16 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeUserProduct(String id) {
+  void removeUserProduct(String id) async {
+    try {
+      http.Response response =
+          await http.delete(Uri.parse("$baseProductUrl/$id.json"));
+      if (response.statusCode != 200) {
+        return;
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
     final currentProduct = findById(id);
     if (_products.contains(currentProduct)) {
       _products.remove(currentProduct);
