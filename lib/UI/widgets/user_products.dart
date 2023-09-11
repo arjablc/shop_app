@@ -26,65 +26,80 @@ class UserProductItem extends StatelessWidget {
     return NetworkImage(url);
   }
 
+  void removeProduct(BuildContext context) {
+    Provider.of<ProductProvider>(context, listen: false).removeUserProduct(id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      color: Colors.grey[700],
-      child: ListTile(
-        leading: CircleAvatar(
-            backgroundImage: buildBackgroundImage(imageUrl, noImage),
-            radius: 30),
-        title: Text(
-          maxLines: 1,
-          name,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subtitle: Text(
-          "\$ $price",
-          style:
-              Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15),
-        ),
-        trailing: SizedBox(
-            width: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    isDismissible: true,
-                    useSafeArea: true,
-                    isScrollControlled: true,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    backgroundColor: Colors.grey[800],
-                    builder: ((context) => SafeArea(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                            child: ProductEditSheet(
-                              isNewProduct: false,
-                              productId: id,
+    return Dismissible(
+      behavior: HitTestBehavior.translucent,
+      background: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.red, borderRadius: BorderRadius.circular(20)),
+        alignment: Alignment.centerRight,
+        child: const Icon(Icons.delete),
+      ),
+      key: ValueKey(id),
+      onDismissed: (_) => removeProduct(context),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: Colors.grey[700],
+        child: ListTile(
+          leading: CircleAvatar(
+              backgroundImage: buildBackgroundImage(imageUrl, noImage),
+              radius: 30),
+          title: Text(
+            maxLines: 1,
+            name,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          subtitle: Text(
+            "\$ $price",
+            style:
+                Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15),
+          ),
+          trailing: SizedBox(
+              width: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      isDismissible: true,
+                      useSafeArea: true,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      backgroundColor: Colors.grey[800],
+                      builder: ((context) => SafeArea(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: ProductEditSheet(
+                                isNewProduct: false,
+                                productId: id,
+                              ),
                             ),
-                          ),
-                        )),
-                  ),
-                ),
-                IconButton(
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.redAccent,
+                          )),
                     ),
-                    onPressed: () =>
-                        Provider.of<ProductProvider>(context, listen: false)
-                            .removeUserProduct(id)),
-              ],
-            )),
+                  ),
+                  IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: () => removeProduct(context)),
+                ],
+              )),
+        ),
       ),
     );
   }

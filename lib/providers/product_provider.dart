@@ -1,89 +1,60 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../models/product_model.dart';
 import 'package:http/http.dart' as http;
 
 class ProductProvider with ChangeNotifier {
+  String baseProductUrl =
+      "https://shop-app-68146-default-rtdb.asia-southeast1.firebasedatabase.app/products";
   //ignore: prefer_final_fields
-  final List<Product> _nonUserItems = [
-    Product(
-      id: 'p1',
-      name: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
-      imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 'p2',
-      name: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    ),
-    Product(
-      id: 'p3',
-      name: 'Yellow Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
-      price: 19.99,
-      imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
-    ),
-    Product(
-      id: 'p4',
-      name: 'Iron Pan',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
-    ),
-  ];
+  List<Product> _products = [];
 
-  List<Product> get nonUserItems => [..._nonUserItems];
+  List<Product> get productList => [..._products];
 
-  final List<Product> _userProductList = [
-    Product(
-        id: 'u1',
-        name: "Dummy User Product",
-        description: "Just a product made to check the logic of the app",
-        imageUrl:
-            'https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg',
-        price: 100.00)
-  ];
-
-  List<Product> get userProducts => [..._userProductList];
-
-  List<Product> get finalListOfItems => [..._userProductList, ..._nonUserItems];
+//!For when there are different users in our app and we need to access the products of the current user
+//*Or this can be done in the backend ??
+  // List<Product> userProducts (String userId) {
+  //   return _products.where((element) => element.userId = userId);
+  // };
 
   Product findById(String id) {
-    return finalListOfItems.firstWhere((element) => element.id == id);
+    return _products.firstWhere((element) => element.id == id);
+  }
+
+  List<Product> fetchProductList = [];
+  Future<void> fetchUserProduct() async {
+    try {
+      http.Response response =
+          await http.get(Uri.parse("$baseProductUrl.json"));
+      if (response.statusCode != 200 || response.body == "Null") {
+        return;
+      }
+
+      _products = Product.productsFromJson(response.body);
+    } catch (error) {
+      debugPrint(error.toString());
+    }
   }
 
   void addUserProduct(Product product) async {
     try {
-      http.post(
-          Uri.parse(
-              "https://shop-app-68146-default-rtdb.asia-southeast1.firebasedatabase.app/"),
-          body: {
-            "titile": product.name,
-            "description": product.description,
-            "price": product.price,
-            "imageUrl": product.imageUrl,
-            "isFavorite": product.isFavorite
-          });
+      http.Response response = await http
+          .post(Uri.parse("$baseProductUrl.json"), body: product.toJson());
+      product.id = json.decode(response.body)["name"];
     } catch (error) {
       debugPrint(error.toString());
     }
 
-    _userProductList.add(product);
+    _products.add(product);
     notifyListeners();
   }
 
   void removeUserProduct(String id) {
     final currentProduct = findById(id);
-    if (_userProductList.contains(currentProduct)) {
-      _userProductList.remove(currentProduct);
+    if (_products.contains(currentProduct)) {
+      _products.remove(currentProduct);
       notifyListeners();
     }
     return;

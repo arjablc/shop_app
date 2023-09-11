@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newshopapp/providers/cart_provider.dart';
+import 'package:newshopapp/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../UI/screen/cart_screen.dart';
@@ -50,9 +51,22 @@ class _OverviewScreenState extends State<OverviewScreen> {
           )
         ],
       ),
-      body: const ProcductOverviewGrid(
-        isShowFavorites: false,
-      ),
+      body: FutureBuilder(
+          future: Provider.of<ProductProvider>(context, listen: false)
+              .fetchUserProduct(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              return const ProcductOverviewGrid(
+                isShowFavorites: false,
+              );
+            }
+            return const Text("Loading");
+          }),
     );
   }
 }
