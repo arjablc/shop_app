@@ -61,8 +61,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
               );
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return const ProcductOverviewGrid(
-                isShowFavorites: false,
+              return RefreshIndicator(
+                backgroundColor: Colors.grey[800],
+                color: Colors.white,
+                onRefresh: () =>
+                    Provider.of<ProductProvider>(context, listen: false)
+                        .fetchUserProduct(),
+                child: const ProcductOverviewGrid(
+                  isShowFavorites: false,
+                ),
               );
             }
             return const Text("Loading");
