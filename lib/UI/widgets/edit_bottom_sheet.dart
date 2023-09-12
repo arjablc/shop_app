@@ -25,6 +25,7 @@ class ProductEditSheet extends StatefulWidget {
 class _ProductEditSheetState extends State<ProductEditSheet> {
   late Product currentProduct;
   File? _pickedImage;
+  final FocusNode _imageUrlFocusNode = FocusNode();
   bool changeOldProductImage = false;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -62,38 +63,21 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
   }
 
   Widget previewImage(bool newItem) {
-    if (newItem) {
-      if (_pickedImage == null) {
-        return const Icon(Icons.add);
-      } else {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.file(
-            _pickedImage!,
-            fit: BoxFit.cover,
-          ),
-        );
-      }
+    if (currentProduct.imageUrl.isEmpty && _pickedImage == null) {
+      return const Icon(Icons.add);
     }
-    return currentProduct.imageUrl.isEmpty
-        ? const Icon(Icons.add)
-        : !changeOldProductImage
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  currentProduct.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: _pickedImage == null
+            ? Image.network(
+                currentProduct.imageUrl,
+                fit: BoxFit.cover,
               )
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: _pickedImage == null
-                    ? Image.network(currentProduct.imageUrl)
-                    : Image.file(
-                        _pickedImage!,
-                        fit: BoxFit.cover,
-                      ),
-              );
+            : Image.file(
+                _pickedImage!,
+                fit: BoxFit.cover,
+              ));
   }
 
   void buttonSubmit() {
@@ -174,10 +158,6 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                     flex: 1,
                     child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          changeOldProductImage =
-                              widget.isNewProduct ? false : true;
-                        });
                         _pickImageFromGallery();
                       },
                       child: Container(
@@ -196,13 +176,13 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                   Flexible(
                     flex: 2,
                     child: TextFormField(
+                      focusNode: _imageUrlFocusNode,
                       initialValue: currentProduct.imageUrl,
                       decoration: const InputDecoration(labelText: "Image Url"),
-                      onSaved: (newValue) {
-                        if (newValue == null) {
-                          return;
-                        }
-                        currentProduct.imageUrl = newValue;
+                      onChanged: (newValue) {
+                        setState(() {
+                          currentProduct.imageUrl = newValue;
+                        });
                       },
                     ),
                   )
