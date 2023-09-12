@@ -83,7 +83,18 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateUi() {
+  void updateProduct(Product product) async {
+    try {
+      http.Response response = await http.patch(
+          Uri.parse("$baseProductUrl/${product.id}.json"),
+          body: product.toJson());
+      if (response.statusCode != 200) {
+        return;
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
     notifyListeners();
   }
 }

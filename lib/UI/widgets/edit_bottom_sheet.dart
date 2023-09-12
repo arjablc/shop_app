@@ -87,7 +87,8 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
         Provider.of<ProductProvider>(context, listen: false)
             .addUserProduct(currentProduct);
       }
-      Provider.of<ProductProvider>(context, listen: false).updateUi();
+      Provider.of<ProductProvider>(context, listen: false)
+          .updateProduct(currentProduct);
       Navigator.pop(context);
     }
   }
