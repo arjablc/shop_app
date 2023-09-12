@@ -28,7 +28,7 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
   final FocusNode _imageUrlFocusNode = FocusNode();
   bool changeOldProductImage = false;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
+  bool _isLoading = false;
   //Init state
   @override
   void initState() {
@@ -80,15 +80,27 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
               ));
   }
 
-  void buttonSubmit() {
+  void buttonSubmit() async {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
       if (widget.isNewProduct) {
-        Provider.of<ProductProvider>(context, listen: false)
+        await Provider.of<ProductProvider>(context, listen: false)
             .addUserProduct(currentProduct);
       }
-      Provider.of<ProductProvider>(context, listen: false)
+      if (!mounted) {
+        return;
+      }
+      await Provider.of<ProductProvider>(context, listen: false)
           .updateProduct(currentProduct);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isLoading = false;
+      });
       Navigator.pop(context);
     }
   }
@@ -200,7 +212,10 @@ class _ProductEditSheetState extends State<ProductEditSheet> {
                     child: const Text("Cancel"),
                   ),
                   TextButton(
-                      onPressed: buttonSubmit, child: const Text("Submit"))
+                      onPressed: buttonSubmit,
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text("Submit"))
                 ],
               ),
               verticalSpace()

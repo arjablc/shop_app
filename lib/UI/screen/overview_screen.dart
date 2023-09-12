@@ -53,7 +53,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       ),
       body: FutureBuilder(
           future: Provider.of<ProductProvider>(context, listen: false)
-              .fetchUserProduct(),
+              .fetchProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -61,15 +61,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
               );
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return RefreshIndicator(
-                backgroundColor: Colors.grey[800],
-                color: Colors.white,
-                onRefresh: () =>
-                    Provider.of<ProductProvider>(context, listen: false)
-                        .fetchUserProduct(),
-                child: const ProcductOverviewGrid(
-                  isShowFavorites: false,
-                ),
+              return const ProcductOverviewGrid(
+                isShowFavorites: false,
               );
             }
             return const Text("Loading");

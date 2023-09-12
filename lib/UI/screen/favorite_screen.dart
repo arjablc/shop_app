@@ -10,7 +10,8 @@ class FavotireScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<ProductProvider>(context);
-    final bool isAnyFavorite = productData.favoriteItems.isEmpty ? false : true;
+    final bool isAnyFavorite =
+        productData.favoriteProducts.isEmpty ? false : true;
     return Scaffold(
       appBar: AppBar(title: const Text('Favorites')),
       body: isAnyFavorite

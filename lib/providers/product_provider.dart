@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../models/product_model.dart';
 import 'package:http/http.dart' as http;
@@ -23,8 +24,8 @@ class ProductProvider with ChangeNotifier {
     return _products.firstWhere((element) => element.id == id);
   }
 
-  List<Product> fetchProductList = [];
-  Future<void> fetchUserProduct() async {
+  List<Product> fetchedProductList = [];
+  Future<void> fetchProducts() async {
     try {
       http.Response response =
           await http.get(Uri.parse("$baseProductUrl.json"));
@@ -38,7 +39,7 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  void addUserProduct(Product product) async {
+  Future<void> addUserProduct(Product product) async {
     try {
       http.Response response = await http
           .post(Uri.parse("$baseProductUrl.json"), body: product.toJson());
@@ -69,21 +70,14 @@ class ProductProvider with ChangeNotifier {
     return;
   }
 
-  final List<Product> _favoriteItems = [];
+  List<Product> get favoriteProducts =>
+      _products.where((element) => element.isFavorite == true).toList();
 
-  List<Product> get favoriteItems => [..._favoriteItems];
-
-  void toggleFavortie(Product product) {
-    if (_favoriteItems.contains(product)) {
-      _favoriteItems.remove(product);
-    } else {
-      _favoriteItems.add(product);
-    }
-    product.toggleFavorite();
-    notifyListeners();
+  void toggleFavorite() {
+    //TODO implement the toggle favorites method
   }
 
-  void updateProduct(Product product) async {
+  Future<void> updateProduct(Product product) async {
     try {
       http.Response response = await http.patch(
           Uri.parse("$baseProductUrl/${product.id}.json"),

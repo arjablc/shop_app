@@ -100,7 +100,7 @@ class CustomGridTile extends StatelessWidget {
                             stops: const [(0.0), (0.5)]),
                       ),
                       child: GridTileContent(
-                          productsList: productProvider, product: product),
+                          productProvider: productProvider, product: product),
                     ))
               ],
             );
@@ -114,11 +114,11 @@ class CustomGridTile extends StatelessWidget {
 class GridTileContent extends StatelessWidget {
   const GridTileContent({
     super.key,
-    required this.productsList,
+    required this.productProvider,
     required this.product,
   });
 
-  final ProductProvider productsList;
+  final ProductProvider productProvider;
   final Product product;
 
   @override
@@ -136,7 +136,7 @@ class GridTileContent extends StatelessWidget {
                 color: Colors.transparent,
                 child: IconButton(
                     splashColor: Colors.redAccent,
-                    onPressed: () => productsList.toggleFavortie(product),
+                    onPressed: () => productProvider.toggleFavorite(),
                     icon: Icon(product.isFavorite
                         ? Icons.favorite
                         : Icons.favorite_border)),
