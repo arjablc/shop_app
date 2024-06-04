@@ -1,17 +1,16 @@
-# Your Shop App
+# shopapp
 
-A shop application made from flutter with modern UI. 
+A new Flutter project.
 
-## Functionalities
-- [x] ~~Add products to favorite~~
-- [x] ~~Add and remove products to cart~~
-- [x] ~~View your order history~~
+## Getting Started
 
-## To be implemented 
-- [ ] Increasing or decreasing the quantity of products in your cart 
-- [ ] Implementing login functions
-- [ ] Adding animations here and there
+This project is a starting point for a Flutter application.
 
-# Samples 
+A few resources to get you started if this is your first Flutter project:
 
-<img src ="samples/sample_1.png" height = "100%" width = "40%"> <img src ="samples/sample_2.png" height = "100%" width = "40%"> <img src ="samples/sample_3.png" height = "100%" width = "40%"> <img src ="samples/sample_4_new.png" height = "100%" width = "40%"> 
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

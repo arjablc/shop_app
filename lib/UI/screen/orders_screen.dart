@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/UI/widgets/custom_orders.dart';
-import 'package:newshopapp/providers/order_provider.dart';
+import '../widgets/custom_orders.dart';
+import '../../providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:newshopapp/models/cart_model.dart';
+import 'cart_model.dart';
 
 class OrderItems {
   final String id;

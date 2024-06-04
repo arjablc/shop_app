@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/providers/product_provider.dart';
+import '../../providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_bottom_sheet.dart';
 
 class UserProductItem extends StatelessWidget {
   const UserProductItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.imageUrl,
     required this.price,
     required this.id,
-  }) : super(key: key);
+  });
   final String name;
   final String imageUrl;
   final double price;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/cart_provider.dart';
 import '../../models/product_model.dart';
+import '../../providers/cart_provider.dart';
 import '../../providers/product_provider.dart';
 import '../screen/product_detail_screen.dart';
 
 class CustomGridTile extends StatelessWidget {
   const CustomGridTile({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
   final String id;
 
   void navigateToDetailScreen(String id, BuildContext context) {

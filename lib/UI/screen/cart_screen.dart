@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:newshopapp/providers/cart_provider.dart';
-import 'package:newshopapp/providers/order_provider.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/custom_cart_item_ui.dart';

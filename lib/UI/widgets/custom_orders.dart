@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 // import 'package:provider/provider.dart';
 import 'dart:math';
 
-import 'package:newshopapp/models/cart_model.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../../models/cart_model.dart';
 
 class CustomOrdersUi extends StatefulWidget {
   const CustomOrdersUi({
-    Key? key,
+    super.key,
     required this.id,
     required this.price,
     required this.orders,
     required this.dateTime,
-  }) : super(key: key);
+  });
 
   final String id;
   final double price;

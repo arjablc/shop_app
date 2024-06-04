@@ -4,17 +4,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:newshopapp/helpers/user_product_form_validator.dart';
-import 'package:newshopapp/models/product_model.dart';
-import 'package:newshopapp/providers/product_provider.dart';
+import '../../helpers/user_product_form_validator.dart';
+import '../../models/product_model.dart';
+import '../../providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductEditSheet extends StatefulWidget {
   const ProductEditSheet({
-    Key? key,
+    super.key,
     required this.productId,
     required this.isNewProduct,
-  }) : super(key: key);
+  });
   final String productId;
   final bool isNewProduct;
 

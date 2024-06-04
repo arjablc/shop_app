@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/UI/widgets/edit_bottom_sheet.dart';
-import 'package:newshopapp/UI/widgets/user_products.dart';
-import 'package:newshopapp/providers/product_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/product_provider.dart';
+import '..//widgets/user_products.dart';
+import '../widgets/edit_bottom_sheet.dart';
 
 class UserProductScreen extends StatelessWidget {
   const UserProductScreen({super.key});

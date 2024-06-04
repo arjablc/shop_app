@@ -1,6 +1,6 @@
 {
-    "name": "newshopapp",
-    "short_name": "newshopapp",
+    "name": "shopapp",
+    "short_name": "shopapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

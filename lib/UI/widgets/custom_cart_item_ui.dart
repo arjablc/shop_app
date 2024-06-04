@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:newshopapp/providers/cart_provider.dart';
+import "../../providers/cart_provider.dart";
 import 'package:provider/provider.dart';
 
 class CartItemUi extends StatelessWidget {
   const CartItemUi({
-    Key? key,
+    super.key,
     required this.cartId,
     required this.name,
     required this.quantity,
     required this.price,
-  }) : super(key: key);
+  });
   final String cartId;
   final String name;
   final int quantity;
